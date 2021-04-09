@@ -12,8 +12,8 @@ import (
 var (
 	logLevel      = flag.String("log-level", "info", "Verbosity of logging")
 	listenAddress = flag.String("listen-address", ":9141", "Address to listen on for telemetry")
-	grepPattern   = flag.String("pattern", ".*", "Regexp for sysctl parameters")
-	skipPattern   = flag.String("skip-pattern", "", "Regexp for skipping sysctl parameters")
+	includeRegex  = flag.String("include", ".*", "RegExp for sysctl parameters")
+	excludeRegex  = flag.String("exclude", "", "RegExp for skipping sysctl parameters")
 	metricsPrefix = flag.String("metrics-prefix", "sysctl", "Prefix of prometheus metrics")
 )
 
@@ -30,9 +30,9 @@ func main() {
 		log.SetLevel(log.WarnLevel)
 	}
 	exporter := &Exporter{
-		grepPattern: *grepPattern,
-		skipPattern: *skipPattern,
-		prefix:      *metricsPrefix,
+		includeRegex: *includeRegex,
+		excludeRegex: *excludeRegex,
+		prefix:       *metricsPrefix,
 	}
 	prometheus.MustRegister(exporter)
 

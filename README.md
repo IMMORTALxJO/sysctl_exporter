@@ -23,16 +23,16 @@ docker run -d -p 9141:9141 immortalxjo/sysctl_exporter:latest
 
 ### Usage
 ```
+  -exclude string
+    	RegExp for skipping sysctl parameters
+  -include string
+    	RegExp for sysctl parameters (default ".*")
   -listen-address string
     	Address to listen on for telemetry (default ":9141")
   -log-level string
     	Verbosity of logging (default "info")
   -metrics-prefix string
     	Prefix of prometheus metrics (default "sysctl")
-  -pattern string
-    	Regexp for sysctl parameters (default ".*")
-  -skip-pattern string
-    	Regexp for skipping sysctl parameters
 ```
 
 ### Format

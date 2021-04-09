@@ -11,9 +11,9 @@ import (
 )
 
 type Exporter struct {
-	grepPattern string
-	skipPattern string
-	prefix      string
+	includeRegex string
+	excludeRegex string
+	prefix       string
 }
 
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
@@ -27,7 +27,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 		return
 	}
 	for sysctlName, value := range rawSysctls {
-		if sysctlNameIsFiltered(sysctlName, e.grepPattern, e.skipPattern) {
+		if sysctlNameIsFiltered(sysctlName, e.includeRegex, e.excludeRegex) {
 			continue
 		}
 		values := strings.Split(value, "\t")
@@ -58,15 +58,15 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-func sysctlNameIsFiltered(sysctlName string, grepPattern string, skipPattern string) bool {
-	matched, err := regexp.MatchString(grepPattern, sysctlName)
+func sysctlNameIsFiltered(sysctlName string, include string, exclude string) bool {
+	matched, err := regexp.MatchString(include, sysctlName)
 	if err != nil || matched == false {
 		return true
 	}
-	if skipPattern == "" {
+	if exclude == "" {
 		return false
 	}
-	matched, err = regexp.MatchString(skipPattern, sysctlName)
+	matched, err = regexp.MatchString(exclude, sysctlName)
 	if err != nil || matched == true {
 		return true
 	}

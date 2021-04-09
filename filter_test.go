@@ -7,40 +7,40 @@ func TestSysctlNameFilter(t *testing.T) {
 
 	// default params, all parameters
 	parameters := []string{"abc", "bcd", "cde", "a.b.c", ".a_s", "...", ".*"}
-	pattern := ".*"
-	skip_pattern := ""
+	include := ".*"
+	exclude := ""
 
 	for _, param := range parameters {
-		res = sysctlNameIsFiltered(param, pattern, skip_pattern)
+		res = sysctlNameIsFiltered(param, include, exclude)
 		if res {
-			t.Errorf("String '%s' did not pass '%s' + '%s'", param, pattern, skip_pattern)
+			t.Errorf("String '%s' did not pass '%s' + '%s'", param, include, exclude)
 		}
 	}
 
 	// simple match and skip
 	parameters = []string{"a.b.c", "b.c.d", "bb", "c.d.e", "_", ".*"}
 	answer := []bool{false, false, false, true, true, true}
-	pattern = "b"
+	include = "b"
 	for i, param := range parameters {
-		res = sysctlNameIsFiltered(param, pattern, "")
+		res = sysctlNameIsFiltered(param, include, "")
 		if res != answer[i] {
-			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, pattern, skip_pattern, res)
+			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, include, exclude, res)
 		}
-		res = sysctlNameIsFiltered(param, "", pattern)
+		res = sysctlNameIsFiltered(param, "", include)
 		if res == answer[i] {
-			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, skip_pattern, pattern, res)
+			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, exclude, include, res)
 		}
 	}
 
 	//  match and skip, complex
 	parameters = []string{"a.b.c", "b.c.d", "bb", "c.d.e", "_e", ".*"}
 	answer = []bool{true, true, false, true, false, true}
-	pattern = "b|e"
-	skip_pattern = "c"
+	include = "b|e"
+	exclude = "c"
 	for i, param := range parameters {
-		res = sysctlNameIsFiltered(param, pattern, skip_pattern)
+		res = sysctlNameIsFiltered(param, include, exclude)
 		if res != answer[i] {
-			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, pattern, skip_pattern, res)
+			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, include, exclude, res)
 		}
 	}
 
@@ -58,8 +58,8 @@ func TestSysctlNameFilter(t *testing.T) {
 		"net.ipv4.udp_rmem_min",
 		"net.ipv4.udp_wmem_min",
 	}
-	pattern = "ipv4.(udp|tcp).*mem"
-	skip_pattern = "udp_mem"
+	include = "ipv4.(udp|tcp).*mem"
+	exclude = "udp_mem"
 	answer = []bool{
 		true,
 		true,
@@ -74,9 +74,9 @@ func TestSysctlNameFilter(t *testing.T) {
 		false,
 	}
 	for i, param := range parameters {
-		res = sysctlNameIsFiltered(param, pattern, skip_pattern)
+		res = sysctlNameIsFiltered(param, include, exclude)
 		if res != answer[i] {
-			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, pattern, skip_pattern, res)
+			t.Errorf("String '%s' with '%s' + '%s' returned %t", param, include, exclude, res)
 		}
 	}
 
