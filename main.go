@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
-	"net/http"
 )
 
 var (
@@ -18,6 +19,9 @@ var (
 
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
+}
+
+func main() {
 	flag.Parse()
 	switch *logLevel {
 	case "debug":
@@ -25,9 +29,6 @@ func init() {
 	case "warn", "warning":
 		log.SetLevel(log.WarnLevel)
 	}
-}
-
-func main() {
 	exporter := &Exporter{
 		grepPattern: *grepPattern,
 		skipPattern: *skipPattern,
