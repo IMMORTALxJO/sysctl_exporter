@@ -1,7 +1,8 @@
 name: Publish Docker image
 on:
   push:
-  - init-cicd
+    branches:
+    - init-cicd
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
