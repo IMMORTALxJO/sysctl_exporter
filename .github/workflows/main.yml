@@ -24,3 +24,9 @@ jobs:
           context: .
           push: true
           tags: immortalxjo/sysctl_exporter:latest
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: immortalxjo/sysctl_exporter
