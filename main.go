@@ -4,6 +4,7 @@ import (
 	"flag"
 	"net/http"
 
+	sysctl "github.com/immortalxjo/go-sysctl"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
@@ -15,6 +16,7 @@ var (
 	includeRegex  = flag.String("include", ".*", "RegExp for sysctl parameters")
 	excludeRegex  = flag.String("exclude", "", "RegExp for skipping sysctl parameters")
 	metricsPrefix = flag.String("metrics-prefix", "sysctl", "Prefix of prometheus metrics")
+	procSysPath   = flag.String("proc-sys-path", "/proc/sys/", "Path to /proc/sys/ directory")
 )
 
 func init() {
@@ -29,6 +31,14 @@ func main() {
 	case "warn", "warning":
 		log.SetLevel(log.WarnLevel)
 	}
+
+	// Set /proc/sys/ path for go-syslog
+	sysctlBase := *procSysPath
+	if sysctlBase[len(sysctlBase)-1:] != "/" {
+		sysctlBase = sysctlBase + "/"
+	}
+	sysctl.SysctlBase = sysctlBase
+
 	exporter := &Exporter{
 		includeRegex: *includeRegex,
 		excludeRegex: *excludeRegex,
