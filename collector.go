@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	sysctl "github.com/immortalxjo/go-sysctl"
+	sysctl "github.com/lorenzosaino/go-sysctl"
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
 )
