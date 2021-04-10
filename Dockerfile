@@ -5,4 +5,4 @@ RUN go build
 
 FROM alpine:3.13
 COPY --from=builder /app/sysctl_exporter /bin/sysctl_exporter
-ENTRYPOINT [ "/bin/sysctl_exporter", "--proc-sys-path", "/host/proc/sys/" ]
+ENTRYPOINT [ "/bin/sysctl_exporter" ]
