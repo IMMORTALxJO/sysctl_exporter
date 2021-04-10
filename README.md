@@ -16,9 +16,9 @@ sysctl_parameter{param="vm.overcommit_memory"} 1
 sysctl_parameter{param="vm.overcommit_ratio"} 50
 ...
 ```
-or use already built image from hub.docker.com 
+or use already built image from docker hub 
 ```
-docker run -d -v "/proc/sys:/host/proc/sys" -p 9141:9141 immortalxjo/sysctl_exporter:latest
+docker run -d -v "/proc/sys:/host/proc/sys:ro" -p 9141:9141 immortalxjo/sysctl_exporter:latest
 ```
 
 ### Usage
