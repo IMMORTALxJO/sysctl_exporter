@@ -8,7 +8,7 @@ Parameters with numbered values are supported only.
 Build and run docker image:
 ```
 # docker build . -t sysctl_exporter
-# docker run -d -p 9141:9141 sysctl_exporter
+# docker run -d -v "/proc/sys:/host/proc/sys" -p 9141:9141 sysctl_exporter
 # curl http://localhost:9141/metrics 
 ...
 sysctl_parameter{param="vm.overcommit_kbytes"} 0
@@ -18,7 +18,7 @@ sysctl_parameter{param="vm.overcommit_ratio"} 50
 ```
 or use already built image from hub.docker.com 
 ```
-docker run -d -p 9141:9141 immortalxjo/sysctl_exporter:latest
+docker run -d -v "/proc/sys:/host/proc/sys" -p 9141:9141 immortalxjo/sysctl_exporter:latest
 ```
 
 ### Usage
@@ -33,6 +33,8 @@ docker run -d -p 9141:9141 immortalxjo/sysctl_exporter:latest
     	Verbosity of logging (default "info")
   -metrics-prefix string
     	Prefix of prometheus metrics (default "sysctl")
+  -proc-sys-path string
+    	Path to /proc/sys/ directory (default "/proc/sys/")
 ```
 
 ### Format
