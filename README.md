@@ -1,6 +1,6 @@
 # sysctl exporter
 
-That application exports sysctl parameters in prometheus format.
+Export sysctl parameters in prometheus format on Linux environments.
 Parameters with numbered values are supported only.
 
 ### How to run
